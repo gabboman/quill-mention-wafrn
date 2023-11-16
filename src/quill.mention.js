@@ -428,11 +428,12 @@ class Mention {
   nextItem() {
     let increment = 0;
     let newIndex;
+    let disabled;
 
     do {
       increment++;
       newIndex = (this.itemIndex + increment) % this.values.length;
-      var disabled =
+      disabled =
         this.mentionList.childNodes[newIndex].dataset.disabled === "true";
       if (increment === this.values.length + 1) {
         // we've wrapped around w/o finding an enabled item
@@ -449,12 +450,13 @@ class Mention {
   prevItem() {
     let decrement = 0;
     let newIndex;
+    let disabled;
 
     do {
       decrement++;
       newIndex =
         (this.itemIndex + this.values.length - decrement) % this.values.length;
-      var disabled =
+      disabled =
         this.mentionList.childNodes[newIndex].dataset.disabled === "true";
       if (decrement === this.values.length + 1) {
         // we've wrapped around w/o finding an enabled item
