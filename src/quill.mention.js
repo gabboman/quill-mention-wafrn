@@ -18,10 +18,10 @@ class Mention {
     this.cursorPos = null;
     this.values = [];
     this.suspendMouseEnter = false;
-    //this token is an object that may contains one key "abandoned", set to
-    //true when the previous source call should be ignored in favor or a
-    //more recent execution.  This token will be null unless a source call
-    //is in progress.
+    // this token is an object that may contains one key "abandoned", set to
+    // true when the previous source call should be ignored in favor or a
+    // more recent execution.  This token will be null unless a source call
+    // is in progress.
     this.existingSourceExecutionToken = null;
 
     this.quill = quill;
@@ -82,14 +82,14 @@ class Mention {
         : this.options.dataAttributes,
     });
 
-    //Bind all option-functions so they have a reasonable context
-    for (let o in this.options) {
+    // Bind all option-functions so they have a reasonable context
+    for (const o in this.options) {
       if (typeof this.options[o] === "function") {
         this.options[o] = this.options[o].bind(this);
       }
     }
 
-    //create mention container
+    // create mention container
     this.mentionContainer = document.createElement("div");
     this.mentionContainer.className = this.options.mentionContainerClass
       ? this.options.mentionContainerClass
@@ -112,8 +112,8 @@ class Mention {
     quill.on("text-change", this.onTextChange.bind(this));
     quill.on("selection-change", this.onSelectionChange.bind(this));
 
-    //Pasting doesn't fire selection-change after the pasted text is
-    //inserted, so here we manually trigger one
+    // Pasting doesn't fire selection-change after the pasted text is
+    // inserted, so here we manually trigger one
     quill.container.addEventListener("paste", () => {
       setTimeout(() => {
         const range = quill.getSelection();
@@ -131,7 +131,7 @@ class Mention {
       quill.keyboard.bindings[Keys.TAB].pop(),
     );
 
-    for (let selectKey of this.options.selectKeys) {
+    for (const selectKey of this.options.selectKeys) {
       quill.keyboard.addBinding(
         {
           key: selectKey,
@@ -284,7 +284,7 @@ class Mention {
       render.denotationChar = "";
     }
 
-    var insertAtPos;
+    let insertAtPos;
 
     if (!programmaticInsert) {
       insertAtPos = this.mentionCharPos;
@@ -352,7 +352,7 @@ class Mention {
   }
 
   renderLoading() {
-    var renderedLoading = this.options.renderLoading();
+    const renderedLoading = this.options.renderLoading();
     if (!renderedLoading) {
       return;
     }
@@ -366,7 +366,7 @@ class Mention {
     }
 
     this.mentionList.innerHTML = "";
-    var loadingDiv = document.createElement("div");
+    const loadingDiv = document.createElement("div");
     loadingDiv.className = "ql-mention-loading";
     setInnerContent(loadingDiv, this.options.renderLoading());
     this.mentionContainer.append(loadingDiv);
@@ -374,7 +374,7 @@ class Mention {
   }
 
   removeLoading() {
-    var loadingDiv =
+    const loadingDiv =
       this.mentionContainer.getElementsByClassName("ql-mention-loading");
     if (loadingDiv.length > 0) {
       loadingDiv[0].remove();
@@ -388,7 +388,7 @@ class Mention {
       this.values = data;
       this.mentionList.innerText = "";
 
-      var initialSelection = -1;
+      let initialSelection = -1;
 
       for (let i = 0; i < data.length; i += 1) {
         const li = document.createElement("li");
@@ -426,8 +426,8 @@ class Mention {
   }
 
   nextItem() {
-    var increment = 0;
-    var newIndex;
+    let increment = 0;
+    let newIndex;
 
     do {
       increment++;
@@ -435,7 +435,7 @@ class Mention {
       var disabled =
         this.mentionList.childNodes[newIndex].dataset.disabled === "true";
       if (increment === this.values.length + 1) {
-        //we've wrapped around w/o finding an enabled item
+        // we've wrapped around w/o finding an enabled item
         newIndex = -1;
         break;
       }
@@ -447,8 +447,8 @@ class Mention {
   }
 
   prevItem() {
-    var decrement = 0;
-    var newIndex;
+    let decrement = 0;
+    let newIndex;
 
     do {
       decrement++;
@@ -457,7 +457,7 @@ class Mention {
       var disabled =
         this.mentionList.childNodes[newIndex].dataset.disabled === "true";
       if (decrement === this.values.length + 1) {
-        //we've wrapped around w/o finding an enabled item
+        // we've wrapped around w/o finding an enabled item
         newIndex = -1;
         break;
       }
@@ -600,7 +600,7 @@ class Mention {
       height: mentionCharPos.height,
     };
 
-    //Which rectangle should it be relative to
+    // Which rectangle should it be relative to
     const relativeToPos = this.options.fixMentionsToQuill
       ? containerPos
       : mentionCharPosAbsolute;
@@ -615,7 +615,7 @@ class Mention {
     } else {
       leftPos += relativeToPos.left;
 
-      //if its off the righ edge, push it back
+      // if its off the righ edge, push it back
       if (
         leftPos + this.mentionContainer.offsetWidth >
         document.documentElement.clientWidth
@@ -636,22 +636,22 @@ class Mention {
       this.mentionContainer.offsetHeight <= availableSpaceBottom;
     const fitsTop = this.mentionContainer.offsetHeight <= availableSpaceTop;
 
-    var placement;
+    let placement;
 
     if (this.options.defaultMenuOrientation === "top" && fitsTop) {
       placement = "top";
     } else if (this.options.defaultMenuOrientation === "bottom" && fitsBottom) {
       placement = "bottom";
     } else {
-      //it doesnt fit either so put it where there's the most space
+      // it doesnt fit either so put it where there's the most space
       placement = availableSpaceBottom > availableSpaceTop ? "bottom" : "top";
     }
 
     if (placement === "bottom") {
       topPos = relativeToPos.top + relativeToPos.height;
       if (!fitsBottom) {
-        //shrink it to fit
-        //3 is a bit of a fudge factor so it doesnt touch the edge of the screen
+        // shrink it to fit
+        // 3 is a bit of a fudge factor so it doesnt touch the edge of the screen
         this.mentionContainer.style.height = availableSpaceBottom - 3 + "px";
       }
 
@@ -662,8 +662,8 @@ class Mention {
     } else {
       topPos = relativeToPos.top - this.mentionContainer.offsetHeight;
       if (!fitsTop) {
-        //shrink it to fit
-        //3 is a bit of a fudge factor so it doesnt touch the edge of the screen
+        // shrink it to fit
+        // 3 is a bit of a fudge factor so it doesnt touch the edge of the screen
         this.mentionContainer.style.height = availableSpaceTop - 3 + "px";
         topPos = 3;
       }
@@ -729,7 +729,7 @@ class Mention {
           this.existingSourceExecutionToken.abandoned = true;
         }
         this.renderLoading();
-        var sourceRequestToken = {
+        const sourceRequestToken = {
           abandoned: false,
         };
         this.existingSourceExecutionToken = sourceRequestToken;
@@ -781,7 +781,7 @@ class Mention {
   }
 
   openMenu(denotationChar) {
-    var selection = this.quill.getSelection(true);
+    const selection = this.quill.getSelection(true);
     this.quill.insertText(selection.index, denotationChar);
     this.quill.blur();
     this.quill.focus();
