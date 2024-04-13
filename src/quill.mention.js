@@ -139,7 +139,7 @@ class Mention {
 		);
 		quill.keyboard.bindings[Keys.ENTER].unshift(
 			quill.keyboard.bindings[Keys.ENTER].pop()
-		); 
+		);
 
 		quill.keyboard.addBinding(
 			{
