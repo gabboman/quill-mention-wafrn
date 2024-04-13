@@ -1,5 +1,16 @@
 import Quill from 'quill';
 
+function _callSuper(t, o, e) {
+  return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
+}
+function _isNativeReflectConstruct() {
+  try {
+    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+  } catch (t) {}
+  return (_isNativeReflectConstruct = function () {
+    return !!t;
+  })();
+}
 function ownKeys(e, r) {
   var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
@@ -20,6 +31,20 @@ function _objectSpread2(e) {
     });
   }
   return e;
+}
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : i + "";
 }
 function _typeof(o) {
   "@babel/helpers - typeof";
@@ -109,17 +134,6 @@ function _setPrototypeOf(o, p) {
   };
   return _setPrototypeOf(o, p);
 }
-function _isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-  try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -133,20 +147,6 @@ function _possibleConstructorReturn(self, call) {
     throw new TypeError("Derived constructors may only return object or undefined");
   }
   return _assertThisInitialized(self);
-}
-function _createSuper(Derived) {
-  var hasNativeReflectConstruct = _isNativeReflectConstruct();
-  return function _createSuperInternal() {
-    var Super = _getPrototypeOf(Derived),
-      result;
-    if (hasNativeReflectConstruct) {
-      var NewTarget = _getPrototypeOf(this).constructor;
-      result = Reflect.construct(Super, arguments, NewTarget);
-    } else {
-      result = Super.apply(this, arguments);
-    }
-    return _possibleConstructorReturn(this, result);
-  };
 }
 function _superPropBase(object, property) {
   while (!Object.prototype.hasOwnProperty.call(object, property)) {
@@ -171,20 +171,6 @@ function _get() {
   }
   return _get.apply(this, arguments);
 }
-function _toPrimitive(input, hint) {
-  if (typeof input !== "object" || input === null) return input;
-  var prim = input[Symbol.toPrimitive];
-  if (prim !== undefined) {
-    var res = prim.call(input, hint || "default");
-    if (typeof res !== "object") return res;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (hint === "string" ? String : Number)(input);
-}
-function _toPropertyKey(arg) {
-  var key = _toPrimitive(arg, "string");
-  return typeof key === "symbol" ? key : String(key);
-}
 
 var Keys = {
   TAB: 'Tab',
@@ -207,7 +193,7 @@ function attachDataValues(element, data, dataAttributes) {
 }
 function setInnerContent(element, value) {
   if (value === null) return;
-  if (_typeof(value) === "object") element.appendChild(value);else element.innerText = value;
+  if (_typeof(value) === 'object') element.appendChild(value);else element.innerText = value;
 }
 function getMentionCharIndex(text, mentionDenotationChars, isolateChar, allowInlineMentionChar) {
   return mentionDenotationChars.reduce(function (prev, mentionChar) {
@@ -254,22 +240,21 @@ function hasValidMentionCharIndex(mentionCharIndex, text, isolateChar, textPrefi
   return !mentionPrefix || !!mentionPrefix.match(/\s/);
 }
 
-var Embed = Quill["import"]("blots/embed");
+var Embed = Quill["import"]('blots/embed');
 var MentionBlot = /*#__PURE__*/function (_Embed) {
-  _inherits(MentionBlot, _Embed);
-  var _super = _createSuper(MentionBlot);
   function MentionBlot(scroll, node) {
     var _this;
     _classCallCheck(this, MentionBlot);
-    _this = _super.call(this, scroll, node);
-    _defineProperty(_assertThisInitialized(_this), "hoverHandler", void 0);
-    _defineProperty(_assertThisInitialized(_this), "hoverHandler", void 0);
+    _this = _callSuper(this, MentionBlot, [scroll, node]);
+    _defineProperty(_this, "hoverHandler", void 0);
+    _defineProperty(_this, "hoverHandler", void 0);
     _this.clickHandler = null;
     _this.hoverHandler = null;
     _this.mounted = false;
     return _this;
   }
-  _createClass(MentionBlot, [{
+  _inherits(MentionBlot, _Embed);
+  return _createClass(MentionBlot, [{
     key: "attach",
     value: function attach() {
       _get(_getPrototypeOf(MentionBlot.prototype), "attach", this).call(this);
@@ -277,8 +262,8 @@ var MentionBlot = /*#__PURE__*/function (_Embed) {
         this.mounted = true;
         this.clickHandler = this.getClickHandler();
         this.hoverHandler = this.getHoverHandler();
-        this.domNode.addEventListener("click", this.clickHandler, false);
-        this.domNode.addEventListener("mouseenter", this.hoverHandler, false);
+        this.domNode.addEventListener('click', this.clickHandler, false);
+        this.domNode.addEventListener('mouseenter', this.hoverHandler, false);
       }
     }
   }, {
@@ -287,7 +272,7 @@ var MentionBlot = /*#__PURE__*/function (_Embed) {
       _get(_getPrototypeOf(MentionBlot.prototype), "detach", this).call(this);
       this.mounted = false;
       if (this.clickHandler) {
-        this.domNode.removeEventListener("click", this.clickHandler);
+        this.domNode.removeEventListener('click', this.clickHandler);
         this.clickHandler = null;
       }
     }
@@ -296,7 +281,7 @@ var MentionBlot = /*#__PURE__*/function (_Embed) {
     value: function getClickHandler() {
       var _this2 = this;
       return function (e) {
-        var event = _this2.buildEvent("mention-clicked", e);
+        var event = _this2.buildEvent('mention-clicked', e);
         window.dispatchEvent(event);
         e.preventDefault();
       };
@@ -326,8 +311,8 @@ var MentionBlot = /*#__PURE__*/function (_Embed) {
     key: "create",
     value: function create(data) {
       var node = _get(_getPrototypeOf(MentionBlot), "create", this).call(this);
-      var denotationChar = document.createElement("span");
-      denotationChar.className = "ql-mention-denotation-char";
+      var denotationChar = document.createElement('span');
+      denotationChar.className = 'ql-mention-denotation-char';
       denotationChar.innerText = data.denotationChar;
       node.appendChild(denotationChar);
       if (typeof this.render === 'function') {
@@ -352,12 +337,11 @@ var MentionBlot = /*#__PURE__*/function (_Embed) {
       return domNode.dataset;
     }
   }]);
-  return MentionBlot;
 }(Embed);
-MentionBlot.blotName = "mention";
-MentionBlot.tagName = "span";
-MentionBlot.className = "mention";
-Quill.register("blots/mention", MentionBlot);
+MentionBlot.blotName = 'mention';
+MentionBlot.tagName = 'span';
+MentionBlot.className = 'mention';
+Quill.register('blots/mention', MentionBlot);
 
 var Mention = /*#__PURE__*/function () {
   function Mention(quill, options) {
@@ -471,7 +455,7 @@ var Mention = /*#__PURE__*/function () {
       key: Keys.DOWN
     }, this.downHandler.bind(this));
   }
-  _createClass(Mention, [{
+  return _createClass(Mention, [{
     key: "selectHandler",
     value: function selectHandler() {
       if (this.isOpen && !this.existingSourceExecutionToken) {
@@ -998,7 +982,6 @@ var Mention = /*#__PURE__*/function () {
       this.quill.focus();
     }
   }]);
-  return Mention;
 }();
 Quill.register('modules/mention', Mention);
 
