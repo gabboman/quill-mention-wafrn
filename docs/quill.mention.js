@@ -5,35 +5,60 @@ var quillMention = (function (Quill) {
 
   var Quill__default = /*#__PURE__*/_interopDefaultLegacy(Quill);
 
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      enumerableOnly && (symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      })), keys.push.apply(keys, symbols);
-    }
-    return keys;
+  function _callSuper(t, o, e) {
+    return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
   }
-  function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = null != arguments[i] ? arguments[i] : {};
-      i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+  function _isNativeReflectConstruct() {
+    try {
+      var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (t) {}
+    return (_isNativeReflectConstruct = function () {
+      return !!t;
+    })();
+  }
+  function ownKeys(e, r) {
+    var t = Object.keys(e);
+    if (Object.getOwnPropertySymbols) {
+      var o = Object.getOwnPropertySymbols(e);
+      r && (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })), t.push.apply(t, o);
+    }
+    return t;
+  }
+  function _objectSpread2(e) {
+    for (var r = 1; r < arguments.length; r++) {
+      var t = null != arguments[r] ? arguments[r] : {};
+      r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+        _defineProperty(e, r, t[r]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+        Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
       });
     }
-    return target;
+    return e;
   }
-  function _typeof(obj) {
+  function _toPrimitive(t, r) {
+    if ("object" != typeof t || !t) return t;
+    var e = t[Symbol.toPrimitive];
+    if (void 0 !== e) {
+      var i = e.call(t, r || "default");
+      if ("object" != typeof i) return i;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return ("string" === r ? String : Number)(t);
+  }
+  function _toPropertyKey(t) {
+    var i = _toPrimitive(t, "string");
+    return "symbol" == typeof i ? i : i + "";
+  }
+  function _typeof(o) {
     "@babel/helpers - typeof";
 
-    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-      return typeof obj;
-    } : function (obj) {
-      return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    }, _typeof(obj);
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+      return typeof o;
+    } : function (o) {
+      return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+    }, _typeof(o);
   }
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -173,7 +198,7 @@ var quillMention = (function (Quill) {
   }
   function setInnerContent(element, value) {
     if (value === null) return;
-    if (_typeof(value) === 'object') element.appendChild(value);else element.innerText = value;
+    if (_typeof(value) === "object") element.appendChild(value);else element.innerText = value;
   }
   function getMentionCharIndex(text, mentionDenotationChars, isolateChar, allowInlineMentionChar) {
     return mentionDenotationChars.reduce(function (prev, mentionChar) {
@@ -220,7 +245,7 @@ var quillMention = (function (Quill) {
     return !mentionPrefix || !!mentionPrefix.match(/\s/);
   }
 
-  var Embed = Quill__default["default"]["import"]('blots/embed');
+  var Embed = Quill__default["default"]["import"]("blots/embed");
   var MentionBlot = /*#__PURE__*/function (_Embed) {
     function MentionBlot(scroll, node) {
       var _this;
@@ -242,8 +267,8 @@ var quillMention = (function (Quill) {
           this.mounted = true;
           this.clickHandler = this.getClickHandler();
           this.hoverHandler = this.getHoverHandler();
-          this.domNode.addEventListener('click', this.clickHandler, false);
-          this.domNode.addEventListener('mouseenter', this.hoverHandler, false);
+          this.domNode.addEventListener("click", this.clickHandler, false);
+          this.domNode.addEventListener("mouseenter", this.hoverHandler, false);
         }
       }
     }, {
@@ -252,7 +277,7 @@ var quillMention = (function (Quill) {
         _get(_getPrototypeOf(MentionBlot.prototype), "detach", this).call(this);
         this.mounted = false;
         if (this.clickHandler) {
-          this.domNode.removeEventListener('click', this.clickHandler);
+          this.domNode.removeEventListener("click", this.clickHandler);
           this.clickHandler = null;
         }
       }
@@ -261,7 +286,7 @@ var quillMention = (function (Quill) {
       value: function getClickHandler() {
         var _this2 = this;
         return function (e) {
-          var event = _this2.buildEvent('mention-clicked', e);
+          var event = _this2.buildEvent("mention-clicked", e);
           window.dispatchEvent(event);
           e.preventDefault();
         };
@@ -291,8 +316,8 @@ var quillMention = (function (Quill) {
       key: "create",
       value: function create(data) {
         var node = _get(_getPrototypeOf(MentionBlot), "create", this).call(this);
-        var denotationChar = document.createElement('span');
-        denotationChar.className = 'ql-mention-denotation-char';
+        var denotationChar = document.createElement("span");
+        denotationChar.className = "ql-mention-denotation-char";
         denotationChar.innerText = data.denotationChar;
         node.appendChild(denotationChar);
         if (typeof this.render === "function") {
@@ -318,10 +343,10 @@ var quillMention = (function (Quill) {
       }
     }]);
   }(Embed);
-  MentionBlot.blotName = 'mention';
-  MentionBlot.tagName = 'span';
-  MentionBlot.className = 'mention';
-  Quill__default["default"].register('blots/mention', MentionBlot);
+  MentionBlot.blotName = "mention";
+  MentionBlot.tagName = "span";
+  MentionBlot.className = "mention";
+  Quill__default["default"].register("blots/mention", MentionBlot);
 
   var Mention = /*#__PURE__*/function () {
     function Mention(quill, options) {
